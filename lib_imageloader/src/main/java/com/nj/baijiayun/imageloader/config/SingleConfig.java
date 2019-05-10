@@ -392,7 +392,6 @@ public class SingleConfig {
             new SingleConfig(this).show();
         }
 
-        @Deprecated
         public ConfigBuilder asBitmap() {
             this.asBitmap = true;
             return this;
@@ -442,10 +441,10 @@ public class SingleConfig {
         /**
          * 形状为圆角矩形时的圆角半径
          *
-         * @param rectRoundRadius r
+         * @param rectRoundRadiusDp r
          * @return ConfigBuilder
          */
-        public ConfigBuilder rectRoundCorner(int rectRoundRadius) {
+        public ConfigBuilder rectRoundCorner(int rectRoundRadiusDp) {
             this.rectRoundRadius = dip2px(rectRoundRadius);
             this.shapeMode = ShapeMode.RECT_ROUND;
             return this;
