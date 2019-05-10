@@ -11,7 +11,7 @@ import com.nj.baijiayun.imageloader.config.SingleConfig;
 /**
  * @author chengang
  */
-public class ImageLoader {
+public class ImageLoader implements ILoader {
     /**
      * 默认最大缓存
      */
@@ -25,22 +25,68 @@ public class ImageLoader {
         return init(context, cacheSizeInM, MemoryCategory.NORMAL);
     }
 
+
+    /**
+     * @param context        上下文
+     * @param cacheSizeInM   Glide默认磁盘缓存最大容量250MB
+     * @param memoryCategory 调整内存缓存的大小 LOW(0.5f) ／ NORMAL(1f) ／ HIGH(1.5f);
+     *
+     */
     public static GlobalConfig init(final Context context, int cacheSizeInM, MemoryCategory memoryCategory) {
-        return init(context, cacheSizeInM, memoryCategory, true);
+        //true 磁盘缓存到应用的内部目录 / false 磁盘缓存到外部存
+        return GlobalConfig.init(context, cacheSizeInM, memoryCategory, true);
     }
 
     public static GlobalConfig getConfig() {
         return GlobalConfig.getInstance();
     }
 
-    /**
-     * @param context        上下文
-     * @param cacheSizeInM   Glide默认磁盘缓存最大容量250MB
-     * @param memoryCategory 调整内存缓存的大小 LOW(0.5f) ／ NORMAL(1f) ／ HIGH(1.5f);
-     * @param isInternalCD   true 磁盘缓存到应用的内部目录 / false 磁盘缓存到外部存
-     */
-    public static GlobalConfig init(final Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
-        return GlobalConfig.init(context, cacheSizeInM, memoryCategory, isInternalCD);
+
+    @Override
+    public void init(Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
+        getActualLoader().init(context,cacheSizeInM,memoryCategory,isInternalCD);
+    }
+
+    @Override
+    public void request(SingleConfig config) {
+            getActualLoader().request(config);
+    }
+
+
+
+    @Override
+    public void resumeRequests(Context context) {
+        getActualLoader().resumeRequests(context);
+    }
+
+    @Override
+    public void pauseRequests(Context context) {
+        getActualLoader().pauseRequests(context);
+    }
+
+    @Override
+    public void resumeRequests(Fragment fragment) {
+        getActualLoader().resumeRequests(fragment);
+    }
+
+    @Override
+    public void pauseRequests(Fragment fragment) {
+        getActualLoader().pauseRequests(fragment);
+    }
+
+    @Override
+    public void clearDiskCache() {
+        getActualLoader().clearDiskCache();
+    }
+
+    @Override
+    public void clearMemory() {
+        getActualLoader().clearMemory();
+    }
+
+    @Override
+    public void trimMemory(int level) {
+        getActualLoader().trimMemory(level);
     }
 
     /**
@@ -72,36 +118,5 @@ public class ImageLoader {
         return new SingleConfig.ConfigBuilder(fragment);
     }
 
-
-    public static void pauseRequests() {
-        getActualLoader().pause();
-
-    }
-
-    public static void resumeRequests() {
-        getActualLoader().resume();
-    }
-
-
-    public static void trimMemory(int level){
-        getActualLoader().trimMemory(level);
-    }
-    /**
-     * Clears disk cache.
-     *
-     * <p>
-     * This method should always be called on a background thread, since it is a blocking call.
-     * </p>
-     */
-    public static void clearDiskCache() {
-        getActualLoader().clearDiskCache();
-    }
-
-    /**
-     * Clears as much memory as possible.
-     */
-    public static void clearMemory() {
-        getActualLoader().clearMemory();
-    }
 
 }

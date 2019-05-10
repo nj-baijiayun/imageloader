@@ -17,7 +17,6 @@ public class GlobalConfig {
     private int cacheMaxSize;
     private int placeholderResId;
     private int errorResId;
-    private ScaleMode shapeMode;
 
     private static class SingletonHolder {
         private static GlobalConfig instance = new GlobalConfig();
@@ -52,15 +51,6 @@ public class GlobalConfig {
         return errorResId;
     }
 
-    public ScaleMode getShapeMode() {
-        return shapeMode;
-    }
-
-
-    public GlobalConfig shapeMode(ScaleMode shapeMode) {
-        this.shapeMode = shapeMode;
-        return this;
-    }
 
     public GlobalConfig placeholderResId(int placeholderResId) {
         this.placeholderResId = placeholderResId;

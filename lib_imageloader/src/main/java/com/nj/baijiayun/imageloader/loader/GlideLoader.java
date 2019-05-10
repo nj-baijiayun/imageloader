@@ -2,6 +2,7 @@ package com.nj.baijiayun.imageloader.loader;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -35,6 +36,10 @@ import com.nj.baijiayun.imageloader.config.SingleConfig;
 import com.nj.baijiayun.imageloader.transform.BlurBitmapTranformation;
 import com.nj.baijiayun.imageloader.transform.CropSquareTransformation;
 import com.nj.baijiayun.imageloader.transform.RoundedCornersTransformation;
+
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author chengang
@@ -115,6 +120,7 @@ public class GlideLoader implements ILoader {
 
 
     }
+
 
     private RequestOptions getRequestOptions(SingleConfig config) {
         RequestOptions options = new RequestOptions();
@@ -316,13 +322,6 @@ public class GlideLoader implements ILoader {
         if (transformation != null) {
             options.transform(transformation);
         }
-
-
-//        if (config.isOpenBlur()) {
-//            options.transform(new BlurBitmapTranformation(config.getBlurRadius()));
-//        }
-
-
     }
 
     private int statisticsCount(SingleConfig config) {
@@ -339,20 +338,45 @@ public class GlideLoader implements ILoader {
     }
 
 
+
     @Override
-    public void pause() {
-        Glide.with(GlobalConfig.getInstance().getContext()).pauseRequestsRecursive();
+    public void resumeRequests(Context context) {
+        Glide.with(context).resumeRequestsRecursive();
+
     }
 
     @Override
-    public void resume() {
-        Glide.with(GlobalConfig.getInstance().getContext()).resumeRequestsRecursive();
+    public void pauseRequests(Context context) {
+        Glide.with(context).pauseRequestsRecursive();
+
+
     }
+
+    @Override
+    public void resumeRequests(Fragment fragment) {
+        Glide.with(fragment).resumeRequestsRecursive();
+
+    }
+
+    @Override
+    public void pauseRequests(Fragment fragment) {
+        Glide.with(fragment).pauseRequestsRecursive();
+
+    }
+
 
     @Override
     public void clearDiskCache() {
-        Glide.get(GlobalConfig.getInstance().getContext()).clearDiskCache();
+        executorService.submit(new Runnable() {
+            @Override
+            public void run() {
+                Glide.get(GlobalConfig.getInstance().getContext()).clearDiskCache();
+            }
+        });
+
     }
+
+    final ThreadPoolExecutor executorService = new ThreadPoolExecutor(0, 1, 60L, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 
 
     @Override

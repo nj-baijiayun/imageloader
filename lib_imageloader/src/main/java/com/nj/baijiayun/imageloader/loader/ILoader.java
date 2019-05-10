@@ -1,6 +1,7 @@
 package com.nj.baijiayun.imageloader.loader;
 
 import android.content.Context;
+import android.support.v4.app.Fragment;
 
 import com.bumptech.glide.MemoryCategory;
 import com.nj.baijiayun.imageloader.config.SingleConfig;
@@ -12,9 +13,14 @@ public interface ILoader {
 
     void request(SingleConfig config);
 
-    void pause();
 
-    void resume();
+    void resumeRequests(Context context);
+
+    void pauseRequests(Context context);
+
+    void resumeRequests(Fragment fragment);
+
+    void pauseRequests(Fragment fragment);
 
     void clearDiskCache();
 

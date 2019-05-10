@@ -51,7 +51,7 @@ public class SingleConfig {
      */
     private int rectRoundRadius;
     private int scaleMode;
-    private boolean openBlur=false;
+    private boolean openBlur;
     private int blurRadius;
 
     private LoadListener bitmapListener;
@@ -300,8 +300,8 @@ public class SingleConfig {
         }
 
 
-        public ConfigBuilder openBlur(boolean openBlur) {
-            this.openBlur = openBlur;
+        public ConfigBuilder openBlur() {
+            this.openBlur = true;
             this.blurRadius=25;
             return this;
         }
@@ -392,6 +392,7 @@ public class SingleConfig {
             new SingleConfig(this).show();
         }
 
+        @Deprecated
         public ConfigBuilder asBitmap() {
             this.asBitmap = true;
             return this;
