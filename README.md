@@ -95,7 +95,7 @@ ImageLoader方法：
 > - setBlurRadius() 设置模糊数值
 > - skipMemoryCache() 不进行内存缓存
 > - asBitmap() 加载成bitmap 这个需要into(new BitmapTarget())
-> - asGif() 加载Gif 这个需要into(new GifTarget())
+> - asGif()  加载Gif 这个需要into(new GifTarget())
 > - listener(LoadListener loadListener)
 
 ```
