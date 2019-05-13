@@ -395,5 +395,10 @@ public class GlideLoader implements ILoader {
         Glide.get(GlobalConfig.getInstance().getContext()).onTrimMemory(level);
     }
 
+    @Override
+    public void onLowMemory() {
+        Glide.get(GlobalConfig.getInstance().getContext()).onLowMemory();
+    }
+
 
 }

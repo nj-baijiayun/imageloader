@@ -25,12 +25,13 @@ public class ImageLoader implements ILoader {
     }
 
     public static GlobalConfig init(final Context context, String diskCacheName) {
-        return init(context, diskCacheName,DEFAULT_DISK_CACHE_SIZE);
+        return init(context, diskCacheName, DEFAULT_DISK_CACHE_SIZE);
     }
 
     public static GlobalConfig init(final Context context, String diskCacheName, int cacheSizeInM) {
-        return init(context, diskCacheName, cacheSizeInM,MemoryCategory.NORMAL);
+        return init(context, diskCacheName, cacheSizeInM, MemoryCategory.NORMAL);
     }
+
     /**
      * @param context        上下文
      * @param cacheSizeInM   Glide默认磁盘缓存最大容量250MB
@@ -42,8 +43,6 @@ public class ImageLoader implements ILoader {
     }
 
 
-
-
     public static GlobalConfig getConfig() {
         return GlobalConfig.getInstance();
     }
@@ -51,48 +50,53 @@ public class ImageLoader implements ILoader {
 
     @Override
     public void init(Context context, String diskCacheName, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
-        getActualLoader().init(context, diskCacheName, cacheSizeInM, memoryCategory, isInternalCD);
+        getLoader().init(context, diskCacheName, cacheSizeInM, memoryCategory, isInternalCD);
     }
 
     @Override
     public void request(SingleConfig config) {
-        getActualLoader().request(config);
+        getLoader().request(config);
     }
 
 
     @Override
     public void resumeRequests(Context context) {
-        getActualLoader().resumeRequests(context);
+        getLoader().resumeRequests(context);
     }
 
     @Override
     public void pauseRequests(Context context) {
-        getActualLoader().pauseRequests(context);
+        getLoader().pauseRequests(context);
     }
 
     @Override
     public void resumeRequests(Fragment fragment) {
-        getActualLoader().resumeRequests(fragment);
+        getLoader().resumeRequests(fragment);
     }
 
     @Override
     public void pauseRequests(Fragment fragment) {
-        getActualLoader().pauseRequests(fragment);
+        getLoader().pauseRequests(fragment);
     }
 
     @Override
     public void clearDiskCache() {
-        getActualLoader().clearDiskCache();
+        getLoader().clearDiskCache();
     }
 
     @Override
     public void clearMemory() {
-        getActualLoader().clearMemory();
+        getLoader().clearMemory();
     }
 
     @Override
     public void trimMemory(int level) {
-        getActualLoader().trimMemory(level);
+        getLoader().trimMemory(level);
+    }
+
+    @Override
+    public void onLowMemory() {
+        getLoader().onLowMemory();
     }
 
     /**
@@ -100,7 +104,7 @@ public class ImageLoader implements ILoader {
      *
      * @return r
      */
-    public static ILoader getActualLoader() {
+    public static ILoader getLoader() {
         return GlobalConfig.getInstance().getLoader();
     }
 

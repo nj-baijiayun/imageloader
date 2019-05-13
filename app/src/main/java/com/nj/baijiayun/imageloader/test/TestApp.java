@@ -2,6 +2,7 @@ package com.nj.baijiayun.imageloader.test;
 
 import android.app.Application;
 
+import com.bumptech.glide.Glide;
 import com.nj.baijiayun.imageloader.loader.ImageLoader;
 
 /**
@@ -21,5 +22,18 @@ public class TestApp extends Application {
                 .errorResId(R.mipmap.ic_launcher)
                 .placeholderResId(R.mipmap.ic_launcher);
         instace=this;
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        ImageLoader.getActualLoader().clearMemory();
+        Glide.get(this).onTrimMemory(level);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(this).onLowMemory();
     }
 }

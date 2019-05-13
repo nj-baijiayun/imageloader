@@ -57,16 +57,36 @@ ImageLoader.with(this)
 ## ImageLoader类
 ImageLoader方法：
 > - ImageLoader.init(Context context) //初始化
-> - ImageLoader.trimMemory(int level);
-> - ImageLoader.getActualLoader(); //获取当前的loader
+> - ImageLoader.getLoader(); //获取当前的loader
 > - ImageLoader.with(Context context) //加载图片
-> - ImageLoader.resumeRequests(Fragment fragment) //恢复请求
-> - ImageLoader.resumeRequests(Context context) //恢复请求
-> - ImageLoader.pauseRequests(Fragment fragment) //恢复请求
-> - ImageLoader.pauseRequests(Context context) //恢复请求
+> - ImageLoader.getLoader().resumeRequests(Fragment fragment) //恢复请求
+> - ImageLoader.getLoader().resumeRequests(Context context) //恢复请求
+> - ImageLoader.getLoader().pauseRequests(Fragment fragment) //恢复请求
+> - ImageLoader.getLoader().pauseRequests(Context context) //恢复请求
+> - ImageLoader.getLoader().onLowMemory() 低内存调用
+> - ImageLoader.getLoader().trimMemory(int level) 
+> - ImageLoader.getLoader().clearDiskCache()
+> - ImageLoader.getLoader().clearMemory() // 清除内存缓存(必须在UI线程中调用)
 
-> - ImageLoader.clearDiskCache()
-> - ImageLoader.clearMemory() // 清除内存缓存(必须在UI线程中调用)
+在application 里面调用 自动管理内存
+```
+  
+  @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        ImageLoader.getLoader().onTrimMemory(level);
+       
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        ImageLoader.getLoader().onLowMemory();
+    }
+
+```
+
+
 
 
 ##图片的各种设置信息--SingleConfig
