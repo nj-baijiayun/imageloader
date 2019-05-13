@@ -6,3 +6,10 @@
 * 提供了虚化的效果
 * 简化了使用，全部调用采用链式调用
 
+## 1.0.1
+增加功能
+* asBitmap 这个into(new BitmapTarget())
+* asGif 这个into(new GifTarget())
+* 默认的加载可以 into(new DrawableTarget())
+
+

@@ -17,11 +17,11 @@ allprojects {
 在dependencies下添加依赖
 ```
 dependencies {
-    //当前最新版本为1.0.0
+   
     implementation 'com.nj.baijiayun:imageloader:1.0.0'
 }
 ```
-当前最新版本为1.0.0 [版本说明](./changelog.md)
+替换为最新版本为 [版本说明](./changelog.md)
 
 
 
@@ -94,6 +94,8 @@ ImageLoader方法：
 > - openBlur() ／/高斯模糊 默认25
 > - setBlurRadius() 设置模糊数值
 > - skipMemoryCache() 不进行内存缓存
+> - asBitmap() 加载成bitmap 这个需要into(new BitmapTarget())
+> - asGif() 加载Gif 这个需要into(new GifTarget())
 > - listener(LoadListener loadListener)
 
 ```

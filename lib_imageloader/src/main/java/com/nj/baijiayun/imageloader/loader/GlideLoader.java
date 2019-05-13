@@ -57,15 +57,16 @@ public class GlideLoader implements ILoader {
      * @param isInternalCD   true 磁盘缓存到应用的内部目录 / false 磁盘缓存到外部存
      */
     @Override
-    public void init(Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
+    public void init(Context context, String diskCacheName, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
         //如果在应用当中想要调整内存缓存的大小，开发者可以通过如下方式：
         Glide.get(context).setMemoryCategory(memoryCategory);
         GlideBuilder builder = new GlideBuilder();
         if (isInternalCD) {
-            builder.setDiskCache(new InternalCacheDiskCacheFactory(context, cacheSizeInM * 1024 * 1024));
+            builder.setDiskCache(new InternalCacheDiskCacheFactory(context, diskCacheName, cacheSizeInM * 1024 * 1024));
         } else {
-            builder.setDiskCache(new ExternalPreferredCacheDiskCacheFactory(context, cacheSizeInM * 1024 * 1024));
+            builder.setDiskCache(new ExternalPreferredCacheDiskCacheFactory(context, diskCacheName, cacheSizeInM * 1024 * 1024));
         }
+
 
     }
 
@@ -87,35 +88,41 @@ public class GlideLoader implements ILoader {
         setAnimator(config, requestBuilder);
         //如果是获取bitmap,则回调
         //如果是加载图片，（无论是否为Gif）
+        RequestListener requestListener = null;
+        if (config.getLoadListener() != null) {
+            requestListener = new RequestListener() {
+                @Override
+                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
+                    if (config.getLoadListener() == null) {
+                        return false;
+
+                    }
+                    return config.getLoadListener().onFail(e);
+                }
+
+                @Override
+                public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
+                    if (config.getLoadListener() == null) {
+                        return false;
+
+                    }
+                    return config.getLoadListener().onSuccess(resource);
+                }
+            };
+
+            config.getLoadListener().preLoad();
+
+        }
+
+
         if (config.getTarget() instanceof ImageView) {
-            RequestListener requestListener = null;
-            if (config.getLoadListener() != null) {
-                requestListener = new RequestListener() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
-                        if (config.getLoadListener() == null) {
-                            return false;
 
-                        }
-                        return config.getLoadListener().onFail(e);
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
-                        if (config.getLoadListener() == null) {
-                            return false;
-
-                        }
-                        return config.getLoadListener().onSuccess(resource);
-                    }
-                };
-
-            }
-
-            if (config.getLoadListener() != null) {
-                config.getLoadListener().preLoad();
-            }
             requestBuilder.listener(requestListener).into((ImageView) config.getTarget());
+
+        } else if (config.getTarget() instanceof Target) {
+
+            requestBuilder.listener(requestListener).into((Target) config.getTarget());
+
         }
 
 
@@ -269,7 +276,7 @@ public class GlideLoader implements ILoader {
         RequestBuilder request;
         if (config.isAsBitmap()) {
             request = requestManager.asBitmap();
-        } else if (config.isGif()) {
+        } else if (config.isAsGif() || config.isGif()) {
             request = requestManager.asGif();
         } else {
             request = requestManager.asDrawable();
@@ -336,7 +343,6 @@ public class GlideLoader implements ILoader {
         }
         return count;
     }
-
 
 
     @Override

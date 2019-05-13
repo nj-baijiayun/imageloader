@@ -3,6 +3,7 @@ package com.nj.baijiayun.imageloader.config;
 import android.content.Context;
 
 import com.bumptech.glide.MemoryCategory;
+import com.nj.baijiayun.imageloader.cache.GlideCatchUtil;
 import com.nj.baijiayun.imageloader.loader.GlideLoader;
 import com.nj.baijiayun.imageloader.loader.ILoader;
 
@@ -17,6 +18,8 @@ public class GlobalConfig {
     private int cacheMaxSize;
     private int placeholderResId;
     private int errorResId;
+    private String diskCacheName;
+    private MemoryCategory memoryCategory;
 
     private static class SingletonHolder {
         private static GlobalConfig instance = new GlobalConfig();
@@ -27,11 +30,14 @@ public class GlobalConfig {
     }
 
 
-    public static GlobalConfig init(Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
+    public static GlobalConfig init(Context context, String diskCacheName, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
         GlobalConfig instance = getInstance();
         instance.context = context;
         instance.cacheMaxSize = cacheSizeInM;
-        instance.getLoader().init(context, cacheSizeInM, memoryCategory, isInternalCD);
+        instance.diskCacheName = diskCacheName;
+        instance.memoryCategory = memoryCategory;
+        GlideCatchUtil.getInstance(context).setDiskCacheDir(diskCacheName);
+        instance.getLoader().init(context, diskCacheName, cacheSizeInM, memoryCategory, isInternalCD);
         return instance;
     }
 
@@ -70,5 +76,11 @@ public class GlobalConfig {
         return loader;
     }
 
+    public String getDiskCacheName() {
+        return diskCacheName;
+    }
 
+    public MemoryCategory getMemoryCategory() {
+        return memoryCategory;
+    }
 }

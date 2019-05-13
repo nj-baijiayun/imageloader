@@ -15,27 +15,34 @@ public class ImageLoader implements ILoader {
     /**
      * 默认最大缓存
      */
-    private static final int CACHE_IMAGE_SIZE = 250;
+
+    public static final int DEFAULT_DISK_CACHE_SIZE = 250;
+    public static final String DEFAULT_DISK_CACHE_DIR = "image_manager_disk_cache";
+
 
     public static GlobalConfig init(final Context context) {
-        return init(context, CACHE_IMAGE_SIZE);
+        return init(context, DEFAULT_DISK_CACHE_DIR);
     }
 
-    public static GlobalConfig init(final Context context, int cacheSizeInM) {
-        return init(context, cacheSizeInM, MemoryCategory.NORMAL);
+    public static GlobalConfig init(final Context context, String diskCacheName) {
+        return init(context, diskCacheName,DEFAULT_DISK_CACHE_SIZE);
     }
 
-
+    public static GlobalConfig init(final Context context, String diskCacheName, int cacheSizeInM) {
+        return init(context, diskCacheName, cacheSizeInM,MemoryCategory.NORMAL);
+    }
     /**
      * @param context        上下文
      * @param cacheSizeInM   Glide默认磁盘缓存最大容量250MB
      * @param memoryCategory 调整内存缓存的大小 LOW(0.5f) ／ NORMAL(1f) ／ HIGH(1.5f);
-     *
      */
-    public static GlobalConfig init(final Context context, int cacheSizeInM, MemoryCategory memoryCategory) {
+    public static GlobalConfig init(final Context context, String diskCacheName, int cacheSizeInM, MemoryCategory memoryCategory) {
         //true 磁盘缓存到应用的内部目录 / false 磁盘缓存到外部存
-        return GlobalConfig.init(context, cacheSizeInM, memoryCategory, true);
+        return GlobalConfig.init(context, diskCacheName, cacheSizeInM, memoryCategory, true);
     }
+
+
+
 
     public static GlobalConfig getConfig() {
         return GlobalConfig.getInstance();
@@ -43,15 +50,14 @@ public class ImageLoader implements ILoader {
 
 
     @Override
-    public void init(Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
-        getActualLoader().init(context,cacheSizeInM,memoryCategory,isInternalCD);
+    public void init(Context context, String diskCacheName, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD) {
+        getActualLoader().init(context, diskCacheName, cacheSizeInM, memoryCategory, isInternalCD);
     }
 
     @Override
     public void request(SingleConfig config) {
-            getActualLoader().request(config);
+        getActualLoader().request(config);
     }
-
 
 
     @Override

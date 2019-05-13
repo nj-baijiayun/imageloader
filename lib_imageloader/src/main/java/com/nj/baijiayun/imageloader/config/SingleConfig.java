@@ -2,14 +2,18 @@ package com.nj.baijiayun.imageloader.config;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
-import android.view.View;
+import android.util.Log;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
+import com.bumptech.glide.request.target.Target;
 import com.bumptech.glide.request.transition.ViewPropertyTransition;
 import com.nj.baijiayun.imageloader.listener.LoadListener;
+import com.nj.baijiayun.imageloader.target.BitmapTarget;
+import com.nj.baijiayun.imageloader.target.DrawableTarget;
+import com.nj.baijiayun.imageloader.target.GifTarget;
 
 import java.io.File;
-
 
 
 /**
@@ -29,7 +33,7 @@ public class SingleConfig {
     private int resId;
 
     private boolean isGif;
-    private View target;
+    private Object target;
     private int oWidth;
     private int oHeight;
     private boolean dontAnimate;
@@ -42,6 +46,14 @@ public class SingleConfig {
     private int placeHolderResId;
     private int errorResId;
     private int diskCacheStrategyMode;
+
+    /**
+     * 只获取bitmap
+     */
+    private boolean asBitmap;
+
+    private boolean asGif;
+
     /**
      * 默认矩形,可选直角矩形,圆形/椭圆
      */
@@ -76,6 +88,7 @@ public class SingleConfig {
         this.priority = builder.priority;
         this.placeHolderResId = builder.placeHolderResId;
         this.asBitmap = builder.asBitmap;
+        this.asGif = builder.asGif;
         this.bitmapListener = builder.loadListener;
         this.isGif = builder.isGif;
         this.errorResId = builder.errorResId;
@@ -84,8 +97,8 @@ public class SingleConfig {
         this.dontAnimate = builder.dontAnimate;
         this.skipMemoryCache = builder.skipMemoryCache;
         this.diskCacheStrategyMode = builder.diskCacheStrategyMode;
-        this.blurRadius=builder.blurRadius;
-        this.openBlur=builder.openBlur;
+        this.blurRadius = builder.blurRadius;
+        this.openBlur = builder.openBlur;
     }
 
     public int getDiskCacheStrategyMode() {
@@ -104,6 +117,10 @@ public class SingleConfig {
         return asBitmap;
     }
 
+    public boolean isAsGif() {
+        return asGif;
+    }
+
     public boolean isOpenBlur() {
         return openBlur;
     }
@@ -111,11 +128,6 @@ public class SingleConfig {
     public int getBlurRadius() {
         return blurRadius;
     }
-
-    /**
-     * 只获取bitmap
-     */
-    private boolean asBitmap;
 
     public Context getContext() {
         if (context == null) {
@@ -159,7 +171,7 @@ public class SingleConfig {
         return shapeMode;
     }
 
-    public View getTarget() {
+    public Object getTarget() {
         return target;
     }
 
@@ -236,11 +248,12 @@ public class SingleConfig {
         private File file;
         private int resId;
         private boolean isGif = false;
-        private View target;
+        private Object target;
         /**
          * 只获取bitmap
          */
         private boolean asBitmap;
+        private boolean asGif;
         private LoadListener loadListener;
         //选择加载分辨率的宽
         private int oWidth;
@@ -287,7 +300,7 @@ public class SingleConfig {
         private boolean skipMemoryCache;
         private int diskCacheStrategyMode;
 
-        private boolean openBlur=false;
+        private boolean openBlur = false;
         private int blurRadius;
 
 
@@ -302,7 +315,7 @@ public class SingleConfig {
 
         public ConfigBuilder openBlur() {
             this.openBlur = true;
-            this.blurRadius=25;
+            this.blurRadius = 25;
             return this;
         }
 
@@ -387,18 +400,41 @@ public class SingleConfig {
         }
 
 
-        public void into(View targetView) {
-            this.target = targetView;
+        public void into(ImageView target) {
+            this.target = target;
             new SingleConfig(this).show();
         }
+
+        public void into(GifTarget gifTarget) {
+
+            this.target = gifTarget;
+            new SingleConfig(this).show();
+        }
+
+        public void into(BitmapTarget bitmapTarget) {
+            this.target = bitmapTarget;
+            Log.e("target--> BitmapTarget",( bitmapTarget instanceof Target)+"");
+            new SingleConfig(this).show();
+        }
+
+        public void into(DrawableTarget drawableTarget) {
+            this.target = drawableTarget;
+
+            new SingleConfig(this).show();
+        }
+
 
         public ConfigBuilder asBitmap() {
             this.asBitmap = true;
             return this;
         }
 
-        public ConfigBuilder listener(LoadListener loadListener)
-        {
+        public ConfigBuilder asGif() {
+            this.asGif = true;
+            return this;
+        }
+
+        public ConfigBuilder listener(LoadListener loadListener) {
             this.loadListener = loadListener;
             return this;
         }

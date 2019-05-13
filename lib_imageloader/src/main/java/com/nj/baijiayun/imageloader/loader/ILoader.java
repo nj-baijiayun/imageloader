@@ -9,7 +9,7 @@ import com.nj.baijiayun.imageloader.config.SingleConfig;
 
 public interface ILoader {
 
-    void init(Context context, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD);
+    void init(Context context,String disdiskCacheName, int cacheSizeInM, MemoryCategory memoryCategory, boolean isInternalCD);
 
     void request(SingleConfig config);
 

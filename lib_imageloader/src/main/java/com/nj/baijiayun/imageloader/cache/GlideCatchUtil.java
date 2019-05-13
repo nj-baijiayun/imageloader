@@ -5,10 +5,11 @@ import android.content.Context;
 import java.io.File;
 import java.math.BigDecimal;
 
+import static com.nj.baijiayun.imageloader.loader.ImageLoader.DEFAULT_DISK_CACHE_DIR;
+
 
 public class GlideCatchUtil {
-    private static final String DEFAULT_PATH = "glide";
-    private String mDiskCachePath = DEFAULT_PATH;
+    private String mDiskCachePath = DEFAULT_DISK_CACHE_DIR;
     private static GlideCatchUtil instance;
     private static Context mContext;
     public static GlideCatchUtil getInstance(Context context) {

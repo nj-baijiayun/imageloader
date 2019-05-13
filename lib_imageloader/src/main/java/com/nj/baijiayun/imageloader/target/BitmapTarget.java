@@ -1,5 +1,9 @@
 package com.nj.baijiayun.imageloader.target;
 
+import android.graphics.Bitmap;
+
+import com.bumptech.glide.request.target.CustomTarget;
+
 /**
  * @author chengang
  * @date 2019/5/13
@@ -8,5 +12,7 @@ package com.nj.baijiayun.imageloader.target;
  * @package_name com.nj.baijiayun.imageloader.target
  * @describe
  */
-public class BitmapTarget {
+public abstract class BitmapTarget extends CustomTarget<Bitmap> {
+
+
 }

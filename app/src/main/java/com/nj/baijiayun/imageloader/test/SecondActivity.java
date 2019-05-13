@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.nj.baijiayun.imageloader.listener.LoadListener;
@@ -40,7 +41,7 @@ public class SecondActivity extends AppCompatActivity {
                     public void preLoad() {
 
                     }
-                }).into(findViewById(R.id.img));
+                }).into((ImageView) findViewById(R.id.img));
 
     }
 
