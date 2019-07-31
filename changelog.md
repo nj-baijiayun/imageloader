@@ -1,3 +1,8 @@
+## 1.0.4
+修复url 为空
+
+## 1.0.3
+修复加载圆角bug
 ## 1.0.1
 增加功能
 * asBitmap 这个into(new BitmapTarget())

@@ -369,7 +369,7 @@ public class SingleConfig {
          */
         public ConfigBuilder load(String url) {
             this.url = url;
-            if (url.contains("gif")) {
+            if (url != null && url.endsWith("gif")) {
                 isGif = true;
             }
             return this;
@@ -413,7 +413,7 @@ public class SingleConfig {
 
         public void into(BitmapTarget bitmapTarget) {
             this.target = bitmapTarget;
-            Log.e("target--> BitmapTarget",( bitmapTarget instanceof Target)+"");
+            Log.e("target--> BitmapTarget", (bitmapTarget instanceof Target) + "");
             new SingleConfig(this).show();
         }
 
@@ -481,7 +481,7 @@ public class SingleConfig {
          * @return ConfigBuilder
          */
         public ConfigBuilder rectRoundCorner(int rectRoundRadiusDp) {
-            this.rectRoundRadius = dip2px(rectRoundRadius);
+            this.rectRoundRadius = dip2px(rectRoundRadiusDp);
             this.shapeMode = ShapeMode.RECT_ROUND;
             return this;
         }

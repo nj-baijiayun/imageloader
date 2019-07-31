@@ -1,26 +1,19 @@
 package com.nj.baijiayun.imageloader.test;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.transition.Transition;
 import com.nj.baijiayun.imageloader.loader.ImageLoader;
-import com.nj.baijiayun.imageloader.target.BitmapTarget;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
     public static String url = "https://upload.jianshu.io/users/upload_avatars/4951294/34667d56-03fa-4d00-bd68-81433d73f7de.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96";
-    public static String url2 = "https://www.baidu.com/img/superlogo_c4d7df0a003d3db9b65e9ef0fe6da1ec.png?where=super";
+    public static String url2 = "http://neixun.admin.zhiyun88.com/uploads/images/20190614/97e6782b679cd8295a9e485960109bf6.jpg";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +32,9 @@ public class MainActivity extends AppCompatActivity {
 //
 //
 //
+
+        System.out.println("Cache0" + this.getExternalCacheDir());
+        System.out.println("Cache1" + this.getCacheDir());
 
 
 //        ImageLoader
@@ -103,35 +99,37 @@ public class MainActivity extends AppCompatActivity {
 //                }).into(findViewById(R.id.img));
 
 
-        ImageLoader.with(this).asBitmap().load(url).into(new BitmapTarget() {
-            @Override
-            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                Log.e("TAG", "onResourceReady" + resource);
-
-                ImageView viewById = findViewById(R.id.img);
-                viewById.setImageBitmap(resource);
-            }
-
-            @Override
-            public void onLoadCleared(@Nullable Drawable placeholder) {
-
-            }
-
-            @Override
-            public void onLoadStarted(@Nullable Drawable placeholder) {
-                super.onLoadStarted(placeholder);
-                Log.e("TAG", "onResourceReady start" + placeholder);
-
-
-            }
-
-            @Override
-            public void onLoadFailed(@Nullable Drawable errorDrawable) {
-                super.onLoadFailed(errorDrawable);
-                Log.e("TAG", "onResourceReady fail" + errorDrawable);
-
-            }
-        });
+        String a=null;
+        ImageLoader.with(this).rectRoundCorner(30).load(a).into((ImageView) findViewById(R.id.img));
+//                into(new BitmapTarget() {
+//            @Override
+//            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+//                Log.e("TAG", "onResourceReady" + resource);
+//
+//                ImageView viewById = findViewById(R.id.img);
+//                viewById.setImageBitmap(resource);
+//            }
+//
+//            @Override
+//            public void onLoadCleared(@Nullable Drawable placeholder) {
+//
+//            }
+//
+//            @Override
+//            public void onLoadStarted(@Nullable Drawable placeholder) {
+//                super.onLoadStarted(placeholder);
+//                Log.e("TAG", "onResourceReady start" + placeholder);
+//
+//
+//            }
+//
+//            @Override
+//            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+//                super.onLoadFailed(errorDrawable);
+//                Log.e("TAG", "onResourceReady fail" + errorDrawable);
+//
+//            }
+//        });
     }
 
     @Override

@@ -2,7 +2,6 @@ package com.nj.baijiayun.imageloader.test;
 
 import android.app.Application;
 
-import com.bumptech.glide.Glide;
 import com.nj.baijiayun.imageloader.loader.ImageLoader;
 
 /**
@@ -27,13 +26,12 @@ public class TestApp extends Application {
     @Override
     public void onTrimMemory(int level) {
         super.onTrimMemory(level);
-        ImageLoader.getActualLoader().clearMemory();
-        Glide.get(this).onTrimMemory(level);
+       ImageLoader.getLoader().trimMemory(level);
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-        Glide.get(this).onLowMemory();
+        ImageLoader.getLoader().onLowMemory();
     }
 }
