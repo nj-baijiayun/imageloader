@@ -12,6 +12,7 @@ import com.nj.baijiayun.imageloader.listener.LoadListener;
 import com.nj.baijiayun.imageloader.target.BitmapTarget;
 import com.nj.baijiayun.imageloader.target.DrawableTarget;
 import com.nj.baijiayun.imageloader.target.GifTarget;
+import com.nj.baijiayun.imageloader.transform.RoundedCornersTransformation;
 
 import java.io.File;
 
@@ -46,6 +47,7 @@ public class SingleConfig {
     private int placeHolderResId;
     private int errorResId;
     private int diskCacheStrategyMode;
+    private RoundedCornersTransformation.CornerType cornerType;
 
     /**
      * 只获取bitmap
@@ -99,6 +101,14 @@ public class SingleConfig {
         this.diskCacheStrategyMode = builder.diskCacheStrategyMode;
         this.blurRadius = builder.blurRadius;
         this.openBlur = builder.openBlur;
+        this.cornerType = builder.cornerType;
+    }
+
+    public RoundedCornersTransformation.CornerType getCornerType() {
+        if (cornerType == null) {
+            return RoundedCornersTransformation.CornerType.ALL;
+        }
+        return cornerType;
     }
 
     public int getDiskCacheStrategyMode() {
@@ -302,6 +312,7 @@ public class SingleConfig {
 
         private boolean openBlur = false;
         private int blurRadius;
+        private RoundedCornersTransformation.CornerType cornerType;
 
 
         public ConfigBuilder(Context context) {
@@ -321,6 +332,11 @@ public class SingleConfig {
 
         public ConfigBuilder setBlurRadius(int blurRadius) {
             this.blurRadius = blurRadius;
+            return this;
+        }
+
+        public ConfigBuilder setCornerType(RoundedCornersTransformation.CornerType conrnerType) {
+            this.cornerType = conrnerType;
             return this;
         }
 

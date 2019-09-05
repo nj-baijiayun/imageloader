@@ -8,6 +8,7 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.nj.baijiayun.imageloader.loader.ImageLoader;
+import com.nj.baijiayun.imageloader.transform.RoundedCornersTransformation;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         String a=null;
-        ImageLoader.with(this).rectRoundCorner(30).load(a).into((ImageView) findViewById(R.id.img));
+        ImageLoader.with(this).rectRoundCorner(30).setCornerType(RoundedCornersTransformation.CornerType.TOP).load(url).into((ImageView) findViewById(R.id.img));
 //                into(new BitmapTarget() {
 //            @Override
 //            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

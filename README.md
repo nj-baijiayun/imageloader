@@ -97,6 +97,7 @@ ImageLoader方法：
 > - load(String url) //支持filepath、图片链接、contenProvider、资源id四种
 > - thumbnail(float thumbnail)//缩略图
 > - rectRoundCorner(int rectRoundRadius) //形状为圆角矩形时的圆角半径
+> - setCornerType(RoundedCornersTransformation.CornerType.TOP) //形状为圆角的方向，这个配合设置圆角的方法一起
 > - asSquare() //形状为正方形
 > - asCircle()//加载圆形图片
 > - diskCacheStrategy(int diskCacheStrategy) //DiskCacheStrategyMode.NONE :不缓存图片 ／DiskCacheStrategyMode.SOURCE :缓存图片源文件／DiskCacheStrategyMode.RESULT:缓存修改过的图片／DiskCacheStrategyMode.ALL:缓存所有的图片，默认

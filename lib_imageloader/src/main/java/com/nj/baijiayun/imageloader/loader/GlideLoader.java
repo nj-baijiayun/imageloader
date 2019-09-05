@@ -314,7 +314,7 @@ public class GlideLoader implements ILoader {
                 break;
             case ShapeMode.RECT_ROUND:
                 transformation[count] = new RoundedCornersTransformation
-                        (config.getRectRoundRadius(), 0, RoundedCornersTransformation.CornerType.ALL);
+                        (config.getRectRoundRadius(), 0, config.getCornerType());
                 break;
             case ShapeMode.OVAL:
                 transformation[count] = new CircleCrop();
