@@ -118,6 +118,7 @@ ImageLoader方法：
 > - asBitmap() 加载成bitmap 这个需要into(new BitmapTarget())
 > - asGif()  加载Gif 这个需要into(new GifTarget())
 > - listener(LoadListener loadListener)
+> - setCornerType(RoundedCornersTransformation.CornerType.TOP) 设置圆角方向
 
 ```
 listener(new LoadListener() {

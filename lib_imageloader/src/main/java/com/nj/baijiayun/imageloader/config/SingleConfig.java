@@ -279,7 +279,7 @@ public class SingleConfig {
          * 圆角矩形时圆角的半径
          */
         private int rectRoundRadius;
-        private int scaleMode;
+        private int scaleMode=ScaleMode.CENTER_CROP;
         /**
          * 请求优先级
          */

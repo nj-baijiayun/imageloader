@@ -19,7 +19,10 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.load.engine.cache.ExternalPreferredCacheDiskCacheFactory;
 import com.bumptech.glide.load.engine.cache.InternalCacheDiskCacheFactory;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CenterInside;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.FitCenter;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
@@ -75,7 +78,7 @@ public class GlideLoader implements ILoader {
         //得到初始的 RequestOptions
         RequestOptions requestOptions = getRequestOptions(config);
         //得到一个正确类型的 RequestBuilder(bitmap or 其他加载)
-        RequestBuilder requestBuilder = getRequestBuilder(config);
+        final RequestBuilder requestBuilder = getRequestBuilder(config);
         //应用RequestOptions
         requestBuilder.apply(requestOptions);
         //设置缩略图
@@ -93,15 +96,22 @@ public class GlideLoader implements ILoader {
             requestListener = new RequestListener() {
                 @Override
                 public boolean onLoadFailed(@Nullable GlideException e, Object model, Target target, boolean isFirstResource) {
+
+
                     if (config.getLoadListener() == null) {
                         return false;
 
                     }
+
+
+
                     return config.getLoadListener().onFail(e);
                 }
 
                 @Override
                 public boolean onResourceReady(Object resource, Object model, Target target, DataSource dataSource, boolean isFirstResource) {
+                    Log.d("TAG","onLoad-->onResourceReady");
+
                     if (config.getLoadListener() == null) {
                         return false;
 
@@ -143,21 +153,21 @@ public class GlideLoader implements ILoader {
         //错误设置 和 内存缓存跳过
         options.error(errorResId).skipMemoryCache(config.isSkipMemoryCache());
 
-        int scaleMode = config.getScaleMode();
-        switch (scaleMode) {
-            case ScaleMode.CENTER_CROP:
-                options.centerCrop();
-                break;
-            case ScaleMode.FIT_CENTER:
-                options.fitCenter();
-                break;
-            case ScaleMode.CENTER_INSIDE:
-                options.centerInside();
-                break;
-            default:
-                options.centerCrop();
-                break;
-        }
+//        int scaleMode = config.getScaleMode();
+//        switch (scaleMode) {
+//            case ScaleMode.CENTER_CROP:
+//                options.centerCrop();
+//                break;
+//            case ScaleMode.FIT_CENTER:
+//                options.fitCenter();
+//                break;
+//            case ScaleMode.CENTER_INSIDE:
+//                options.centerInside();
+//                break;
+//            default:
+//                options.centerCrop();
+//                break;
+//        }
 
         //设置图片加载的分辨 sp
         if (config.getoWidth() != 0 && config.getoHeight() != 0) {
@@ -273,20 +283,12 @@ public class GlideLoader implements ILoader {
         } else {
             requestManager = Glide.with(config.getContext());
         }
-        RequestBuilder request;
-        if (config.isAsBitmap()) {
-            request = requestManager.asBitmap();
-        } else if (config.isAsGif() || config.isGif()) {
-            request = requestManager.asGif();
-        } else {
-            request = requestManager.asDrawable();
-        }
         if (config.getResId() > 0) {
-            return request.load(config.getResId());
+            return requestManager.load(config.getResId());
         } else if (config.getFile() != null) {
-            return request.load(config.getFile());
+            return requestManager.load(config.getFile());
         } else {
-            return request.load(config.getUrl());
+            return requestManager.load(config.getUrl());
         }
 
     }
@@ -300,13 +302,30 @@ public class GlideLoader implements ILoader {
     private void setShapeModeAndBlur(SingleConfig config, RequestOptions options) {
 
         int count = 0;
-
         Transformation[] transformation = new Transformation[statisticsCount(config)];
-
         if (config.isOpenBlur()) {
             transformation[count] = new BlurBitmapTranformation(config.getBlurRadius());
             count++;
         }
+
+        if (config.getScaleMode() > 0) {
+            switch (config.getScaleMode()) {
+                case ScaleMode.CENTER_CROP:
+                    transformation[count] = new CenterCrop();
+                    break;
+                case ScaleMode.FIT_CENTER:
+                    transformation[count] = new FitCenter();
+                    break;
+                case ScaleMode.CENTER_INSIDE:
+                    transformation[count] = new CenterInside();
+                    break;
+                default:
+                    transformation[count] = new CenterCrop();
+                    break;
+            }
+            count++;
+        }
+
         switch (config.getShapeMode()) {
             default:
                 break;
@@ -334,7 +353,13 @@ public class GlideLoader implements ILoader {
     private int statisticsCount(SingleConfig config) {
         int count = 0;
 
-        if (config.getShapeMode() == ShapeMode.OVAL || config.getShapeMode() == ShapeMode.RECT_ROUND || config.getShapeMode() == ShapeMode.SQUARE) {
+        if (config.getScaleMode() > 0) {
+            count++;
+        }
+
+        if (config.getShapeMode() == ShapeMode.OVAL ||
+                config.getShapeMode() == ShapeMode.RECT_ROUND ||
+                config.getShapeMode() == ShapeMode.SQUARE) {
             count++;
         }
 

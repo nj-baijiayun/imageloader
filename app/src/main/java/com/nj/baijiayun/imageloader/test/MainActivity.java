@@ -7,14 +7,13 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
-import com.nj.baijiayun.imageloader.loader.ImageLoader;
-import com.nj.baijiayun.imageloader.transform.RoundedCornersTransformation;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    public static String url = "https://upload.jianshu.io/users/upload_avatars/4951294/34667d56-03fa-4d00-bd68-81433d73f7de.png?imageMogr2/auto-orient/strip|imageView2/1/w/96/h/96";
-    public static String url2 = "http://neixun.admin.zhiyun88.com/uploads/images/20190614/97e6782b679cd8295a9e485960109bf6.jpg";
+//    public static String url = "http://neixun2.admin.zhiyun88.com/uploads/images/20190916/00ec409a2b832ac01c2a3cbe26031241.png";
+    public static String url2 = "http://haodiquan.oss-cn-shanghai.aliyuncs.com/1.572577119933118E12.jpg";
+    private static String cover="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
 //
 //
 //
+
+
 
         System.out.println("Cache0" + this.getExternalCacheDir());
         System.out.println("Cache1" + this.getCacheDir());
@@ -101,7 +102,9 @@ public class MainActivity extends AppCompatActivity {
 
 
         String a=null;
-        ImageLoader.with(this).rectRoundCorner(30).setCornerType(RoundedCornersTransformation.CornerType.TOP).load(url).into((ImageView) findViewById(R.id.img));
+//        Glide.with(this).setDefaultRequestOptions(new RequestOptions().centerCrop().fallback(R.drawable.public_ic_image_error)).load("").dontAnimate().transform(new CenterCrop(),new RoundedCornersTransformation(20,0, RoundedCornersTransformation.CornerType.TOP)).error().into((ImageView) findViewById(R.id.cover));
+//       ImageLoader.with(this).rectRoundCorner(30).setCornerType(RoundedCornersTransformation.CornerType.TOP).load(url).into((ImageView) findViewById(R.id.img));
+        Glide.with(this).load(url2.replace("http://", "https://")).disallowHardwareConfig().error(R.drawable.public_ic_image_error).into((ImageView) findViewById(R.id.cover));
 //                into(new BitmapTarget() {
 //            @Override
 //            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
